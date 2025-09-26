@@ -1,7 +1,7 @@
 
-def main(a, b):
+def main(a, b, c):
     return a + b
 
 if __name__ == '__main__':
-    a, b = -4, 9
-    res = main(a, b)
+    a, b, c = -4, 9, 10
+    res = main(a, b, c)
