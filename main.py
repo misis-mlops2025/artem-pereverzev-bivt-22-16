@@ -1,6 +1,6 @@
 
 def main(a, b, c):
-    return a + b
+    return a + b + c
 
 if __name__ == '__main__':
     a, b, c = -4, 9, 10
