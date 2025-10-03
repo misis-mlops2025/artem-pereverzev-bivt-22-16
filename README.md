@@ -78,3 +78,7 @@ uv run pytest tests/
 ```bash
 export PATH_TO_CONFIG="project_name/config.yaml"
 ```
+
+```bash
+python project_name/trainer.py
+```
