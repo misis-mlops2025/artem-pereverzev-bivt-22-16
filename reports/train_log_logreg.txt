@@ -1,0 +1,24 @@
+((.venv) ) artem.pereverzev@artem-pereverzev project_name % python project_name/trainer.py
+2025-10-03 15:41:51.056 | INFO     | __main__:<module>:75 - Config: num_epoch=3 model_type='logreg' C=1.0 max_iter=100 n_estimators=200 max_depth=5 dt_max_depth=10 criterion='gini' path_to_data='data/raw/data.csv' random_state=42 test_size=0.2 target_column='label'
+2025-10-03 15:41:51.056 | INFO     | __main__:_init_model:40 - Model is LogisticRegression()
+2025-10-03 15:41:51.056 | INFO     | __main__:load_data:45 - Start loading data from data/raw/data.csv
+2025-10-03 15:41:51.059 | INFO     | __main__:load_data:52 - End loading data.
+2025-10-03 15:41:51.059 | INFO     | __main__:<module>:80 - Start training
+2025-10-03 15:41:51.059 | INFO     | __main__:<module>:82 - Epoch 0
+2025-10-03 15:41:51.059 | INFO     | __main__:<module>:83 - Training..
+/Users/artem.pereverzev/reps/project_name/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py:1406: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+  y = column_or_1d(y, warn=True)
+2025-10-03 15:41:51.068 | INFO     | __main__:<module>:85 - Evaliating..
+2025-10-03 15:41:51.068 | INFO     | __main__:<module>:87 - ACCURACY: 0.900
+2025-10-03 15:41:51.068 | INFO     | __main__:<module>:82 - Epoch 1
+2025-10-03 15:41:51.068 | INFO     | __main__:<module>:83 - Training..
+/Users/artem.pereverzev/reps/project_name/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py:1406: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+  y = column_or_1d(y, warn=True)
+2025-10-03 15:41:51.069 | INFO     | __main__:<module>:85 - Evaliating..
+2025-10-03 15:41:51.069 | INFO     | __main__:<module>:87 - ACCURACY: 0.900
+2025-10-03 15:41:51.069 | INFO     | __main__:<module>:82 - Epoch 2
+2025-10-03 15:41:51.069 | INFO     | __main__:<module>:83 - Training..
+/Users/artem.pereverzev/reps/project_name/.venv/lib/python3.12/site-packages/sklearn/utils/validation.py:1406: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+  y = column_or_1d(y, warn=True)
+2025-10-03 15:41:51.070 | INFO     | __main__:<module>:85 - Evaliating..
+2025-10-03 15:41:51.070 | INFO     | __main__:<module>:87 - ACCURACY: 0.900

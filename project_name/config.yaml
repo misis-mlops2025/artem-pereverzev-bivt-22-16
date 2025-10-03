@@ -11,7 +11,10 @@ n_estimators: 200
 max_depth: 5
 
 # Параметры DecisionTree
-dt_max_depth: null    # если null → без ограничения
+dt_max_depth: 10    # если null → без ограничения
 criterion: "gini"     # варианты: gini | entropy | log_loss
 
-path_to_data: null
+path_to_data: data/raw/data.csv
+
+random_state: 42
+test_size: 0.2
