@@ -71,3 +71,10 @@ uv run ruff check
 ```bash
 uv run pytest tests/
 ```
+
+## Train
+
+
+```bash
+export PATH_TO_CONFIG="project_name/config.yaml"
+```

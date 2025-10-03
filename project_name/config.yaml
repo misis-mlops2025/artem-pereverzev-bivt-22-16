@@ -1,0 +1,17 @@
+# config.yaml
+
+model_type: "random_forest"   # варианты: logreg | random_forest | decision_tree
+
+# Параметры LogisticRegression
+C: 1.0
+max_iter: 100
+
+# Параметры RandomForest
+n_estimators: 200
+max_depth: 5
+
+# Параметры DecisionTree
+dt_max_depth: null    # если null → без ограничения
+criterion: "gini"     # варианты: gini | entropy | log_loss
+
+path_to_data: null
