@@ -1,0 +1,87 @@
+$ uv run python run_pipeline.py
+
+Running DVC Pipeline Stages Manually
+This is for testing before setting up DVC
+
+==================================================
+Running prepare stage...
+==================================================
+Data prepared successfully:
+  - Train samples: 800
+  - Test samples: 200
+  - Features: ['feature1', 'feature2', 'feature3', 'feature4', 'label']
+
+✅ prepare stage completed successfully
+
+==================================================
+Running preprocess stage...
+==================================================
+Data preprocessing completed:
+  - Train features shape: (800, 7)
+  - Test features shape: (200, 7)
+  - Preprocessor saved to: models/preprocessor.pkl
+
+✅ preprocess stage completed successfully
+
+==================================================
+Running train stage...
+==================================================
+Model training completed:
+  - Model type: random_forest
+  - Test accuracy: 0.5800
+  - Model saved to: models/trained_model.pkl
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.57      0.53      0.55        97
+           1       0.59      0.63      0.61       103
+
+    accuracy                           0.58       200
+   macro avg       0.58      0.58      0.58       200
+weighted avg       0.58      0.58      0.58       200
+
+
+STDERR: 2025-10-10 19:57:26.769 | INFO     | project_name.trainer:_init_model:40 - Model is RandomForestClassifier(max_depth=10, random_state=42)
+
+✅ train stage completed successfully
+
+==================================================
+Running evaluate stage...
+==================================================
+Model evaluation completed:
+  - Accuracy: 0.5800
+  - Precision: 0.5795
+  - Recall: 0.5800
+  - F1 Score: 0.5788
+  - ROC AUC: 0.6409
+
+Confusion Matrix:
+[[51 46]
+ [38 65]]
+
+Metrics saved to: reports/metrics.json
+
+✅ evaluate stage completed successfully
+
+==================================================
+Running predict stage...
+==================================================
+Predictions generated successfully:
+  - Samples predicted: 50
+  - Predictions saved to: data/predictions/predictions.csv
+
+Prediction distribution:
+  - Class 0: 28 samples (56.0%)
+  - Class 1: 22 samples (44.0%)
+
+✅ predict stage completed successfully
+
+==================================================
+🎉 All pipeline stages completed successfully!
+
+Next steps:
+1. Install DVC: pip install dvc
+2. Initialize DVC: dvc init
+3. Run with DVC: dvc repro
+==================================================

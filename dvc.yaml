@@ -1,0 +1,87 @@
+stages:
+  prepare:
+    cmd: python project_name/scripts/prepare_data.py
+    deps:
+      - project_name/scripts/prepare_data.py
+      - data/raw/
+    params:
+      - prepare.seed
+      - prepare.test_size
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+      - data/processed/feature_names.json
+
+  preprocess:
+    cmd: python project_name/scripts/preprocess_data.py
+    deps:
+      - project_name/scripts/preprocess_data.py
+      - data/processed/train.csv
+      - data/processed/test.csv
+      - project_name/processing.py
+    params:
+      - preprocess.scaler_type
+      - preprocess.handle_unknown
+    outs:
+      - data/preprocessed/train_features.pkl
+      - data/preprocessed/test_features.pkl
+      - data/preprocessed/train_targets.pkl
+      - data/preprocessed/test_targets.pkl
+      - models/preprocessor.pkl
+
+  train:
+    cmd: python project_name/scripts/train_model.py
+    deps:
+      - project_name/scripts/train_model.py
+      - data/preprocessed/train_features.pkl
+      - data/preprocessed/train_targets.pkl
+      - project_name/trainer.py
+      - project_name/configs.py
+    params:
+      - train.model_type
+      - train.random_state
+      - train.n_estimators
+      - train.max_depth
+    outs:
+      - models/trained_model.pkl
+      - models/model_metadata.json
+
+  evaluate:
+    cmd: python project_name/scripts/evaluate_model.py
+    deps:
+      - project_name/scripts/evaluate_model.py
+      - models/trained_model.pkl
+      - data/preprocessed/test_features.pkl
+      - data/preprocessed/test_targets.pkl
+    metrics:
+      - reports/metrics.json:
+          cache: false
+    plots:
+      - reports/plots/confusion_matrix.json:
+          cache: false
+      - reports/plots/roc_curve.json:
+          cache: false
+
+  plots:
+    cmd: python project_name/scripts/create_plots.py
+    deps:
+      - project_name/scripts/create_plots.py
+      - reports/metrics.json
+      - reports/plots/confusion_matrix.json
+      - reports/plots/roc_curve.json
+    outs:
+      - reports/plots/performance_metrics.png
+      - reports/plots/confusion_matrix.png
+      - reports/plots/roc_curve.png
+      - reports/plots/metrics_radar.png
+
+  predict:
+    cmd: python project_name/scripts/predict.py
+    deps:
+      - project_name/scripts/predict.py
+      - models/trained_model.pkl
+      - models/preprocessor.pkl
+    params:
+      - predict.batch_size
+    outs:
+      - data/predictions/predictions.csv
