@@ -1,23 +1,20 @@
 stages:
-  prepare:
-    cmd: python project_name/scripts/prepare_data.py
+  generate:
+    cmd: python project_name/scripts/generate_data.py
     deps:
-      - project_name/scripts/prepare_data.py
-      - data/raw/
+      - project_name/scripts/generate_data.py
     params:
-      - prepare.seed
-      - prepare.test_size
+      - data.seed
+      - data.n_samples
+      - data.noise_level
     outs:
-      - data/processed/train.csv
-      - data/processed/test.csv
-      - data/processed/feature_names.json
+      - data/raw/synthetic_data.csv
 
   preprocess:
     cmd: python project_name/scripts/preprocess_data.py
     deps:
       - project_name/scripts/preprocess_data.py
-      - data/processed/train.csv
-      - data/processed/test.csv
+      - data/raw/synthetic_data.csv
       - project_name/processing.py
     params:
       - preprocess.scaler_type
@@ -74,14 +71,3 @@ stages:
       - reports/plots/confusion_matrix.png
       - reports/plots/roc_curve.png
       - reports/plots/metrics_radar.png
-
-  predict:
-    cmd: python project_name/scripts/predict.py
-    deps:
-      - project_name/scripts/predict.py
-      - models/trained_model.pkl
-      - models/preprocessor.pkl
-    params:
-      - predict.batch_size
-    outs:
-      - data/predictions/predictions.csv

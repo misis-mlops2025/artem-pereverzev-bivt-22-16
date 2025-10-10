@@ -1,0 +1,194 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python project_name/scripts/prepare_data.py
+    deps:
+    - path: data/raw/
+      hash: md5
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
+    - path: project_name/scripts/prepare_data.py
+      hash: md5
+      md5: 31476269943196cea45733386d6c3e88
+      size: 2000
+    params:
+      params.yaml:
+        prepare.seed: 42
+        prepare.test_size: 0.2
+    outs:
+    - path: data/processed/feature_names.json
+      hash: md5
+      md5: 4957c9449b98e9f84ac8655899f2e9fe
+      size: 147
+    - path: data/processed/test.csv
+      hash: md5
+      md5: fd03b661b8eea671311709253294e309
+      size: 8807
+    - path: data/processed/train.csv
+      hash: md5
+      md5: af417737c411f254a60e1bab345f48e7
+      size: 35097
+  generate:
+    cmd: python project_name/scripts/generate_data.py
+    deps:
+    - path: project_name/scripts/generate_data.py
+      hash: md5
+      md5: a7d4fcf7a223ce07c220a16ae08dade6
+      size: 2715
+    params:
+      params.yaml:
+        data.n_samples: 1000
+        data.noise_level: 0.1
+        data.seed: 42
+    outs:
+    - path: data/raw/synthetic_data.csv
+      hash: md5
+      md5: 567bd4e1336e147cfa0ddf694ec3bb18
+      size: 43862
+  preprocess:
+    cmd: python project_name/scripts/preprocess_data.py
+    deps:
+    - path: data/raw/synthetic_data.csv
+      hash: md5
+      md5: 567bd4e1336e147cfa0ddf694ec3bb18
+      size: 43862
+    - path: project_name/processing.py
+      hash: md5
+      md5: 58308f944ce4223039dfd87725f1fe2e
+      size: 9770
+    - path: project_name/scripts/preprocess_data.py
+      hash: md5
+      md5: a8b07f295797e60ce3acd2fe4ea65265
+      size: 2132
+    params:
+      params.yaml:
+        preprocess.handle_unknown: ignore
+        preprocess.scaler_type: robust
+    outs:
+    - path: data/preprocessed/test_features.pkl
+      hash: md5
+      md5: 58bb3cd5792c7bf83b171cdc4d9d7549
+      size: 13883
+    - path: data/preprocessed/test_targets.pkl
+      hash: md5
+      md5: 6a7f1916813901b782bd507117300bab
+      size: 7199
+    - path: data/preprocessed/train_features.pkl
+      hash: md5
+      md5: a61f10ba0a3327c9130d68dc52b0a5ec
+      size: 52283
+    - path: data/preprocessed/train_targets.pkl
+      hash: md5
+      md5: cc9e0dedcf2414ac0aad040fbacc729e
+      size: 26400
+    - path: models/preprocessor.pkl
+      hash: md5
+      md5: ea0939b4b5118ec86cacc9a3d545b694
+      size: 1922
+  train:
+    cmd: python project_name/scripts/train_model.py
+    deps:
+    - path: data/preprocessed/train_features.pkl
+      hash: md5
+      md5: a61f10ba0a3327c9130d68dc52b0a5ec
+      size: 52283
+    - path: data/preprocessed/train_targets.pkl
+      hash: md5
+      md5: cc9e0dedcf2414ac0aad040fbacc729e
+      size: 26400
+    - path: project_name/configs.py
+      hash: md5
+      md5: 3ab2588f9e26c36f60441ada55b44fb1
+      size: 1150
+    - path: project_name/scripts/train_model.py
+      hash: md5
+      md5: 73be24628f61faeec922c6e3b4b7d46d
+      size: 2701
+    - path: project_name/trainer.py
+      hash: md5
+      md5: e4cac7651babb475e23674183f8ba287
+      size: 2890
+    params:
+      params.yaml:
+        train.max_depth: 10
+        train.model_type: random_forest
+        train.n_estimators: 100
+        train.random_state: 42
+    outs:
+    - path: models/model_metadata.json
+      hash: md5
+      md5: 21143f5ddd98d859a310293cd8208861
+      size: 251
+    - path: models/trained_model.pkl
+      hash: md5
+      md5: 65f1c01f343c7d401d3263e90ace6286
+      size: 1175113
+  evaluate:
+    cmd: python project_name/scripts/evaluate_model.py
+    deps:
+    - path: data/preprocessed/test_features.pkl
+      hash: md5
+      md5: 58bb3cd5792c7bf83b171cdc4d9d7549
+      size: 13883
+    - path: data/preprocessed/test_targets.pkl
+      hash: md5
+      md5: 6a7f1916813901b782bd507117300bab
+      size: 7199
+    - path: models/trained_model.pkl
+      hash: md5
+      md5: 65f1c01f343c7d401d3263e90ace6286
+      size: 1175113
+    - path: project_name/scripts/evaluate_model.py
+      hash: md5
+      md5: 23f746d7beff1f7c369aa1a9dbf1e46c
+      size: 2851
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 8b1f253b58d63703b033a6f5fe5e0435
+      size: 165
+    - path: reports/plots/confusion_matrix.json
+      hash: md5
+      md5: 6787d511445154ed9c55cf006ac93ad4
+      size: 132
+    - path: reports/plots/roc_curve.json
+      hash: md5
+      md5: bef7a02dfc2022a03125b63d97877c9b
+      size: 3521
+  plots:
+    cmd: python project_name/scripts/create_plots.py
+    deps:
+    - path: project_name/scripts/create_plots.py
+      hash: md5
+      md5: 81952c16e0bdaae17065e4a8670553bc
+      size: 4543
+    - path: reports/metrics.json
+      hash: md5
+      md5: 8b1f253b58d63703b033a6f5fe5e0435
+      size: 165
+    - path: reports/plots/confusion_matrix.json
+      hash: md5
+      md5: 6787d511445154ed9c55cf006ac93ad4
+      size: 132
+    - path: reports/plots/roc_curve.json
+      hash: md5
+      md5: bef7a02dfc2022a03125b63d97877c9b
+      size: 3521
+    outs:
+    - path: reports/plots/confusion_matrix.png
+      hash: md5
+      md5: 27c64af4705572acb5164be771f3e96d
+      size: 80258
+    - path: reports/plots/metrics_radar.png
+      hash: md5
+      md5: ee99cb1b49983c414bf22318374a9387
+      size: 285483
+    - path: reports/plots/performance_metrics.png
+      hash: md5
+      md5: dd16c9d9d554199912295382cdea24bd
+      size: 104702
+    - path: reports/plots/roc_curve.png
+      hash: md5
+      md5: 6e139b7fe5eca33b278e6ca4da0eb46d
+      size: 146077

@@ -37,11 +37,10 @@ def main():
     print("This is for testing before setting up DVC")
     
     stages = [
-        ("prepare", "project_name/scripts/prepare_data.py"),
+        ("generate", "project_name/scripts/generate_data.py"),
         ("preprocess", "project_name/scripts/preprocess_data.py"),
         ("train", "project_name/scripts/train_model.py"),
         ("evaluate", "project_name/scripts/evaluate_model.py"),
-        ("predict", "project_name/scripts/predict.py"),
         ("plots", "project_name/scripts/create_plots.py")
     ]
     

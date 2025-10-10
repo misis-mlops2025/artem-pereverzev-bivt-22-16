@@ -26,19 +26,22 @@ def preprocess_data():
     """Preprocess training and test data"""
     params = load_params()
     
-    # Load feature names
-    with open('data/processed/feature_names.json', 'r') as f:
-        feature_names = json.load(f)
-    
-    # Load data
-    train_df = pd.read_csv('data/processed/train.csv')
-    test_df = pd.read_csv('data/processed/test.csv')
-    
+    # Load raw data
+    data = pd.read_csv('data/raw/synthetic_data.csv')
+
+    # Split into train and test
+    from sklearn.model_selection import train_test_split
+    train_df, test_df = train_test_split(
+        data,
+        test_size=0.2,
+        random_state=42,
+        stratify=data['label']
+    )
     # Separate features and target
-    X_train = train_df.drop(columns=[feature_names['target']])
-    y_train = train_df[feature_names['target']]
-    X_test = test_df.drop(columns=[feature_names['target']])
-    y_test = test_df[feature_names['target']]
+    X_train = train_df.drop(columns=['label'])
+    y_train = train_df['label']
+    X_test = test_df.drop(columns=['label'])
+    y_test = test_df['label']
     
     # Initialize and fit preprocessor
     preprocessor = DataPreprocessor()
