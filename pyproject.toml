@@ -16,6 +16,7 @@ classifiers = [
     
 ]
 dependencies = [
+    "dvc>=3.63.0",
     "loguru>=0.7.3",
     "matplotlib>=3.10.6",
     "mkdocs",
