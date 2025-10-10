@@ -72,13 +72,52 @@ uv run ruff check
 uv run pytest tests/
 ```
 
-## Train
+# Project
+DVC Pipeline
+This project uses DVC (Data Version Control) for reproducible machine learning workflows.
 
+## Pipeline Stages
+The DVC pipeline consists of 5 stages:
 
-```bash
-export PATH_TO_CONFIG="project_name/config.yaml"
+- generate - Creates synthetic data
+- preprocess - Data preprocessing and normalization
+- train - Trains machine learning models
+- evaluate - Evaluates model performance
+- plots - Creates visualizations from metrics
+
+## Quick Start
+```Bash
+# Initialize DVC (first time only)
+dvc init
+
+# Run the complete pipeline
+dvc repro
+
+# Run specific stages
+dvc repro train evaluate
+
+# Show pipeline status
+dvc status
 ```
+## Configuration
+All parameters are in params.yaml:
 
-```bash
-python project_name/trainer.py
+```Yaml
+Apply
+data:
+  seed: 42
+  n_samples: 1000
+
+preprocess:
+  scaler_type: "robust"
+
+train:
+  model_type: "random_forest"
+  n_estimators: 100
 ```
+## Manual Testing
+```Bash
+# Run pipeline without DVC
+uv run python run_pipeline.py
+```
+The pipeline automatically handles data versioning, dependency tracking, and reproducible experiments.
