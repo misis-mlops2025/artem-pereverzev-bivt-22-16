@@ -12,7 +12,7 @@ class ModelConfig(BaseModel):
 
     # Logistic Regression params
     C: Optional[float] = 1.0
-    max_iter: Optional[int] = 10
+    max_iter: Optional[int] = 100
 
     # Random Forest params
     n_estimators: Optional[int] = 100

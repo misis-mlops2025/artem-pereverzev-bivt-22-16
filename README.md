@@ -72,6 +72,9 @@ uv run ruff check
 uv run pytest tests/
 ```
 
+![alt text](image.png)
+
+
 # Project
 DVC Pipeline
 This project uses DVC (Data Version Control) for reproducible machine learning workflows.

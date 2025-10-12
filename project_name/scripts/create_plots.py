@@ -34,7 +34,7 @@ def create_plots():
     
     # Plot 1: Performance Metrics Bar Chart
     plt.figure(figsize=(10, 6))
-    metric_names = ['Accuracy', 'Precision', 'Recall', 'F1 Score', 'ROC AUC']
+    metric_names = ['accuracy', 'precision', 'recall', 'f1_score', 'roc_auc']
     metric_values = [
         metrics['accuracy'],
         metrics['precision'], 
