@@ -20,9 +20,9 @@ import json
 from sklearn.metrics import accuracy_score, classification_report
 
 
-path_to_new_data = Variable.get("path_to_new_data", default_var="/tmp/inference_data/data.csv")
-model_path = Variable.get("path_to_model", default_var="/tmp/models/model.pkl")
-scaler_path = Variable.get("path_to_scaler", default_var="/tmp/data/scaler.pkl")
+path_to_new_data = Variable.get("path_to_new_data", default_var="/tmp/inference_data/")
+model_path = Variable.get("path_to_model", default_var="/opt/airflow/plugins/models/model.pkl")
+scaler_path = Variable.get("path_to_scaler", default_var="/opt/airflow/plugins/data/scaler.pkl")
 
 # Default arguments
 default_args = {
@@ -51,20 +51,15 @@ def check_inference_data():
     """
     print(f"Checking for inference data at: {path_to_new_data}")
     
-    # Check if directory exists
     if not os.path.exists(path_to_new_data):
         print(f"Directory {path_to_new_data} does not exist")
         return False
     
-    # Look for CSV files in the directory
     csv_files = [f for f in os.listdir(path_to_new_data) if f.endswith('.csv')]
-    
-    if not csv_files:
-        print(f"No CSV files found in {path_to_new_data}")
-        return False
     
     print(f"Found {len(csv_files)} CSV files for inference: {csv_files}")
     return True
+
 
 def load_model_and_scaler():
     """
@@ -72,19 +67,15 @@ def load_model_and_scaler():
     """
     print("Loading model and scaler...")
     
-    # Check if model exists
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found at {model_path}")
     
-    # Check if scaler exists
-    if not os.path.exists(scaler_path):
-        raise FileNotFoundError(f"Scaler file not found at {scaler_path}")
+    # if not os.path.exists(scaler_path):
+    #     raise FileNotFoundError(f"Scaler file not found at {scaler_path}")
     
-    # Load model
     with open(model_path, 'rb') as f:
         model = pickle.load(f)
     
-    # Load scaler
     with open(scaler_path, 'rb') as f:
         scaler = pickle.load(f)
     
@@ -93,23 +84,20 @@ def load_model_and_scaler():
     
     return model, scaler
 
-def perform_batch_inference():
+def perform_batch_inference(date):
     """
     Perform batch inference on new data
     """
     print("Starting batch inference...")
     
-    # Load model and scaler
     model, scaler = load_model_and_scaler()
     
-    # Get all CSV files in the inference directory
     csv_files = [f for f in os.listdir(path_to_new_data) if f.endswith('.csv')]
     
     if not csv_files:
         print("No CSV files found for inference")
         return
     
-    # Create output directory
     output_dir = os.path.join(path_to_new_data, 'predictions')
     os.makedirs(output_dir, exist_ok=True)
     
@@ -143,7 +131,8 @@ def perform_batch_inference():
             result_df['prediction'] = predictions
             result_df['prediction_probability'] = prediction_proba[:, 1]
             
-            output_file = os.path.join(output_dir, f'predictions_{csv_file}')
+            date_pripiska = "_".join(str(date).split(' '))
+            output_file = os.path.join(output_dir, f'predictions_{date_pripiska}_{csv_file}')
             result_df.to_csv(output_file, index=False)
             
 
@@ -197,13 +186,12 @@ check_data_task = PythonOperator(
     dag=dag,
 )
 
-# File sensor to wait for new data
 file_sensor_task = FileSensor(
     task_id='wait_for_new_data',
-    filepath=path_to_new_data,
+    filepath=path_to_new_data + 'new_data.csv',
     fs_conn_id='fs_default',
-    poke_interval=30,  # Check every 30 seconds
-    timeout=300,  # Timeout after 5 minutes
+    poke_interval=10,  
+    timeout=300,  
     mode='poke',
     dag=dag,
 )
@@ -211,6 +199,7 @@ file_sensor_task = FileSensor(
 inference_task = PythonOperator(
     task_id='perform_batch_inference',
     python_callable=perform_batch_inference,
+    op_args=["{{ logical_date }}"],
     dag=dag,
 )
 
