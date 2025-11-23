@@ -37,8 +37,4 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        python -m pytest tests/ -v --cov=project_name --cov-report=term
-
-    - name: Run tests (verbose output)
-      run: |
-        python -m pytest tests/ -v
+        uv run pytest -v --cov=project_name --cov-report=term
