@@ -4,10 +4,12 @@ Synthetic data generation script for DVC pipeline.
 Generates sample data for the ML pipeline.
 """
 
-import pandas as pd
-import numpy as np
-import yaml
 import os
+
+import numpy as np
+import pandas as pd
+import yaml
+
 
 def load_params():
     """Load parameters from params.yaml"""
@@ -69,15 +71,15 @@ def generate_synthetic_data():
     # Calculate and print dataset statistics
     class_distribution = data['label'].value_counts().sort_index()
     
-    print(f"Synthetic data generation completed:")
+    print("Synthetic data generation completed:")
     print(f"  - Total samples: {len(data)}")
     print(f"  - Features: {list(data.columns)}")
-    print(f"  - Class distribution:")
+    print("  - Class distribution:")
     for class_label, count in class_distribution.items():
         percentage = count / len(data) * 100
         print(f"    - Class {class_label}: {count} samples ({percentage:.1f}%)")
     
-    print(f"  - Data saved to: data/raw/synthetic_data.csv")
+    print("  - Data saved to: data/raw/synthetic_data.csv")
     
     return data
 

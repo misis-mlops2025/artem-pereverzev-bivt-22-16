@@ -4,15 +4,20 @@ Model evaluation script for DVC pipeline.
 Evaluates model performance and generates metrics.
 """
 
-import pandas as pd
-import numpy as np
 import json
+import os
+
 import joblib
 from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, f1_score,
-    confusion_matrix, roc_curve, auc
+    accuracy_score,
+    auc,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_curve,
 )
-import os
+
 
 def evaluate_model():
     """Evaluate model performance"""
@@ -80,7 +85,7 @@ def evaluate_model():
         with open('reports/plots/roc_curve.json', 'w') as f:
             json.dump(roc_data, f, indent=2)
     
-    print(f"Model evaluation completed:")
+    print("Model evaluation completed:")
     print(f"  - Accuracy: {accuracy:.4f}")
     print(f"  - Precision: {precision:.4f}")
     print(f"  - Recall: {recall:.4f}")
@@ -89,10 +94,10 @@ def evaluate_model():
     if y_pred_proba is not None:
         print(f"  - ROC AUC: {roc_auc:.4f}")
     
-    print(f"\nConfusion Matrix:")
+    print("\nConfusion Matrix:")
     print(cm)
     
-    print(f"\nMetrics saved to: reports/metrics.json")
+    print("\nMetrics saved to: reports/metrics.json")
 
 if __name__ == "__main__":
     evaluate_model()
