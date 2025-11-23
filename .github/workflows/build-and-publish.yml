@@ -1,0 +1,86 @@
+name: Build and Mock Publish
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  release:
+    types: [ published ]
+
+jobs:
+  build-and-publish:
+    name: Build and Mock Publish
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: |
+        uv sync
+
+    - name: Run linting
+      run: |
+        uv run ruff check
+
+    - name: Run tests
+      run: |
+        python -m pytest tests/ -v
+
+    - name: Build package
+      run: |
+        uv build
+
+    - name: List built packages
+      run: |
+        ls -la dist/
+
+    - name: Mock publish to test PyPI
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        echo "📦 Mock publishing package to test PyPI..."
+        echo "Package built successfully: $(ls dist/)"
+        echo "To actually publish, you would run:"
+        echo "uv publish --repository testpypi"
+        echo ""
+        echo "📋 Package info:"
+        uv run python get_package_info.py
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-dist
+        path: dist/
+        retention-days: 30
+
+    - name: Create GitHub Release (on tag)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*
+        generate_release_notes: true
+
+    - name: Mock PyPI publish (on release)
+      if: github.event_name == 'release'
+      run: |
+        echo "🚀 Mock publishing release ${{ github.event.release.tag_name }} to PyPI..."
+        echo "Release assets:"
+        ls -la dist/
+        echo ""
+        echo "To actually publish to PyPI, configure:"
+        echo "1. Add PyPI API token as secret: PYPI_API_TOKEN"
+        echo "2. Use: uv publish --token \${{ secrets.PYPI_API_TOKEN }}"
