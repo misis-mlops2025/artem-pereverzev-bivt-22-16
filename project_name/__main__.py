@@ -4,9 +4,10 @@ Simple script to run the DVC pipeline stages manually for testing.
 This is useful for development before setting up DVC.
 """
 
+import os
 import subprocess
 import sys
-import os
+
 
 def run_stage(stage_name, script_path):
     """Run a single pipeline stage"""
