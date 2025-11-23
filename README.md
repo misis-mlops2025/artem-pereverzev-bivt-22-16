@@ -121,6 +121,10 @@ train:
 ## Manual Testing
 ```Bash
 # Run pipeline without DVC
-uv run python run_pipeline.py
+uv run python run_pipeline.py 
+```
+or BETTER
+```bash
+uv run python -m project_name 
 ```
 The pipeline automatically handles data versioning, dependency tracking, and reproducible experiments.
