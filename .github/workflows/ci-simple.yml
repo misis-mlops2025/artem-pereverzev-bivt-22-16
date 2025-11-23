@@ -2,7 +2,7 @@ name: Simple CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, hw4 ]
   pull_request:
     branches: [ main, develop, hw4 ]
 
