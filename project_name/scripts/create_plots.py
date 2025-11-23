@@ -5,10 +5,12 @@ Generates visualizations based on evaluation metrics.
 """
 
 import json
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as np
 import os
+
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
 
 def create_plots():
     """Create plots from evaluation metrics"""

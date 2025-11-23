@@ -4,21 +4,19 @@ Model training script for DVC pipeline.
 Trains machine learning models.
 """
 
-import pandas as pd
-import numpy as np
 import json
-import yaml
-import joblib
-from sklearn.metrics import accuracy_score, classification_report
 import os
 import sys
 
+import joblib
+from sklearn.metrics import accuracy_score, classification_report
+import yaml
+
 # Add project_name to path
-import sys
-import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from project_name.configs import ModelConfig
 from project_name.trainer import Trainer
+
 
 def load_params():
     """Load parameters from params.yaml"""
@@ -76,10 +74,10 @@ def train_model():
     with open('models/model_metadata.json', 'w') as f:
         json.dump(model_metadata, f, indent=2)
     
-    print(f"Model training completed:")
+    print("Model training completed:")
     print(f"  - Model type: {train_params['model_type']}")
     print(f"  - Test accuracy: {accuracy:.4f}")
-    print(f"  - Model saved to: models/trained_model.pkl")
+    print("  - Model saved to: models/trained_model.pkl")
     
     # Print classification report
     print("\nClassification Report:")

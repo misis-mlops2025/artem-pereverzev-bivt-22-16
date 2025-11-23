@@ -4,17 +4,17 @@ Data preprocessing script for DVC pipeline.
 Applies feature engineering and preprocessing.
 """
 
-import pandas as pd
-import numpy as np
-import json
-import yaml
-import joblib
 import os
 import sys
+
+import joblib
+import pandas as pd
+import yaml
 
 # Add project_name to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from project_name.processing import DataPreprocessor
+
 
 def load_params():
     """Load parameters from params.yaml"""
@@ -24,7 +24,7 @@ def load_params():
 
 def preprocess_data():
     """Preprocess training and test data"""
-    params = load_params()
+    # params = load_params()
     
     # Load raw data
     data = pd.read_csv('data/raw/synthetic_data.csv')
@@ -62,10 +62,10 @@ def preprocess_data():
     # Save preprocessor
     preprocessor.save('models/preprocessor.pkl')
     
-    print(f"Data preprocessing completed:")
+    print("Data preprocessing completed:")
     print(f"  - Train features shape: {X_train_processed.shape}")
     print(f"  - Test features shape: {X_test_processed.shape}")
-    print(f"  - Preprocessor saved to: models/preprocessor.pkl")
+    print("  - Preprocessor saved to: models/preprocessor.pkl")
 
 if __name__ == "__main__":
     preprocess_data()
