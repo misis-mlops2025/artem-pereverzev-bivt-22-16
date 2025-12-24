@@ -1,0 +1,12 @@
+{
+  "model_type": "Linear Regression",
+  "features": [
+    "conv_rate",
+    "acc_rate"
+  ],
+  "target": "avg_daily_trips",
+  "train_size": 40,
+  "test_size": 10,
+  "test_r2": -0.11828082350412394,
+  "test_mse": 68400.36226935679
+}

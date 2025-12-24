@@ -1,0 +1,38 @@
+artem.pereverzev@artem-pereverzev artem-pereverzev-bivt-22-16 % uv run python ./feast_project/collect_data.py
+/Users/artem.pereverzev/reps/artem-pereverzev-bivt-22-16/.venv/lib/python3.12/site-packages/feast/permissions/auth_model.py:35: PydanticDeprecatedSince212: Using `@model_validator` with mode='after' on a classmethod is deprecated. Instead, use an instance method. See the documentation at https://docs.pydantic.dev/2.12/concepts/validators/#model-after-validator. Deprecated in Pydantic V2.12 to be removed in V3.0.
+  @model_validator(mode="after")
+Всего записей в данных: 1807
+Колонки: ['event_timestamp', 'driver_id', 'conv_rate', 'acc_rate', 'avg_daily_trips', 'created']
+Уникальные driver_id: [1005 1004 1003 1002 1001]
+Выбраныые таймстемпы
+  1. 2021-04-12 07:00:00+00:00
+  2. 2025-12-08 17:00:00+00:00
+  3. 2025-12-08 18:00:00+00:00
+  4. 2025-12-08 19:00:00+00:00
+  5. 2025-12-08 20:00:00+00:00
+  6. 2025-12-08 21:00:00+00:00
+  7. 2025-12-08 22:00:00+00:00
+  8. 2025-12-08 23:00:00+00:00
+  9. 2025-12-09 00:00:00+00:00
+  10. 2025-12-09 01:00:00+00:00
+Всего уникальных driver_id: 5
+
+Создано 50 записей для получения фичей
+
+Получение исторических фичей...
+Успешно получено 50 записей с фичами
+
+Первые 5 строк данных:
+   driver_id           event_timestamp  val_to_add  ...  avg_daily_trips  conv_rate_plus_val1  conv_rate_plus_val2
+0       1005 2021-04-12 07:00:00+00:00           1  ...              642             1.610552            33.610552
+1       1001 2021-04-12 07:00:00+00:00           5  ...              673             5.113663            64.113663
+2       1004 2021-04-12 07:00:00+00:00           6  ...              732             6.936330            36.936330
+3       1003 2021-04-12 07:00:00+00:00           4  ...              124             4.758014            43.758014
+4       1002 2021-04-12 07:00:00+00:00           2  ...              562             2.437908            38.437908
+
+[5 rows x 9 columns]
+
+Данные сохранены в collected_data.csv
+Всего записей: 50
+Колонки: ['driver_id', 'event_timestamp', 'val_to_add', 'val_to_add_2', 'conv_rate', 'acc_rate', 'avg_daily_trips', 'conv_rate_plus_val1', 'conv_rate_plus_val2']
+Готово
